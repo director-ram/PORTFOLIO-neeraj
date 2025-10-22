@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 320) backBtn.style.display = 'block'; else backBtn.style.display = 'none';
-  });
+  }, { passive: true });
 
   backBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

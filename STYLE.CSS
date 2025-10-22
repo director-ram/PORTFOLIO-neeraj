@@ -4,6 +4,7 @@ body {
   padding: 0;
   background: #f0f0f0;
   color: #333;
+  scroll-behavior: smooth; /* enable smooth in-page anchor scrolling */
 }
 
 header {
@@ -79,7 +80,7 @@ body{
 /* Photo: circular with subtle floating animation */
 .photo{width:160px; height:160px; border-radius:50%; overflow:hidden; display:inline-block; box-shadow:0 15px 40px rgba(0,0,0,0.6); border:4px solid rgba(255,255,255,0.06);}
 /* Ensure both picture and image fill the container and are clipped to a circle */
-.photo picture, .photo wallpaper.jpg{width:100%; height:100%; object-fit:cover; object-position:center; display:block; border-radius:50%; transform-origin:center; animation:float 6s ease-in-out infinite; transition:transform 0.25s ease, box-shadow 0.25s ease;}
+.photo picture, .photo img{width:100%; height:100%; object-fit:cover; object-position:center; display:block; border-radius:50%; transform-origin:center; animation:float 6s ease-in-out infinite; transition:transform 0.25s ease, box-shadow 0.25s ease;}
 .photo img:hover{transform:translateY(-6px) scale(1.03); box-shadow:0 30px 60px rgba(0,0,0,0.7);}
 
 @keyframes float{0%{transform:translateY(0) rotate(-0.3deg)}50%{transform:translateY(-6px) rotate(0.3deg)}100%{transform:translateY(0) rotate(-0.3deg)}}
@@ -133,6 +134,10 @@ a:hover::after{width:100%}
 section{position:relative; padding-top:3rem; padding-bottom:3rem}
 section + section{margin-top:18px}
 section::before{content:''; position:absolute; left:50%; transform:translateX(-50%); top:0; width:60px; height:3px; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); border-radius:3px; opacity:0.18}
+
+/* Reveal animation for sections and project cards */
+section, .project{opacity:0; transform:translateY(16px); will-change:transform, opacity; transition:opacity .5s ease, transform .6s cubic-bezier(.2,.9,.2,1)}
+section.show, .project.show{opacity:1; transform:none}
 
 /* Education timeline */
 .timeline{position:relative; padding-left:20px;}
