@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
+  // Add scroll throttling to minimize hover/transition cost during active scroll
+  let scrollTimeoutId = null;
+  const scrollingClass = 'is-scrolling';
+  window.addEventListener('scroll', () => {
+    document.body.classList.add(scrollingClass);
+    if (scrollTimeoutId) clearTimeout(scrollTimeoutId);
+    scrollTimeoutId = setTimeout(() => {
+      document.body.classList.remove(scrollingClass);
+    }, 140);
+  }, { passive: true });
+
   // Reveal sections and projects
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

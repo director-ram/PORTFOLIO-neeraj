@@ -71,14 +71,14 @@ body{
 .card{
   background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
   border: 1px solid rgba(255,255,255,0.06);
-  backdrop-filter: blur(8px) saturate(120%);
+  backdrop-filter: blur(4px) saturate(110%);
   border-radius: 14px;
   padding: 24px;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.45);
 }
 
 /* Photo: circular with subtle floating animation */
-.photo{width:160px; height:160px; border-radius:50%; overflow:hidden; display:inline-block; box-shadow:0 15px 40px rgba(0,0,0,0.6); border:4px solid rgba(255,255,255,0.06);}
+.photo{width:160px; height:160px; border-radius:50%; overflow:hidden; display:inline-block; box-shadow:0 10px 24px rgba(0,0,0,0.45); border:4px solid rgba(255,255,255,0.06);}
 /* Ensure both picture and image fill the container and are clipped to a circle */
 .photo picture, .photo img{width:100%; height:100%; object-fit:cover; object-position:center; display:block; border-radius:50%; transform-origin:center; animation:float 6s ease-in-out infinite; transition:transform 0.25s ease, box-shadow 0.25s ease;}
 .photo img:hover{transform:translateY(-6px) scale(1.03); box-shadow:0 30px 60px rgba(0,0,0,0.7);}
@@ -93,6 +93,14 @@ body{
 .btn{display:inline-block; padding:10px 18px; border-radius:999px; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:#032; font-weight:700; text-decoration:none; box-shadow:0 8px 30px rgba(79,172,254,0.12); transition:transform 0.18s ease, box-shadow 0.18s ease;}
 .btn:hover{transform:translateY(-4px) scale(1.02); box-shadow:0 18px 40px rgba(79,172,254,0.18);}
 
+/* During active scroll, reduce costly hover transforms */
+body.is-scrolling .btn:hover,
+body.is-scrolling .card:hover,
+body.is-scrolling .project:hover{
+  transform:none !important;
+  box-shadow:inherit !important;
+}
+
 /* Contact card in right column - subtle separators */
 .contact-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:10px; border:1px solid rgba(255,255,255,0.03);}
 
@@ -102,8 +110,10 @@ body{
 .skill-fill.animate{transition:width 1.4s cubic-bezier(.2,.9,.2,1);}
 
 /* Project cards - lift and glow on hover */
-.project{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));}
+.project{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); contain:layout paint;}
 .project:hover{border-left-color:var(--accent-2); box-shadow:0 30px 60px rgba(0,0,0,0.6);}
+/* lighter hover shadow to reduce paint cost */
+.project:hover{border-left-color:var(--accent-2); box-shadow:0 16px 32px rgba(0,0,0,0.5);}
 
 /* Footer tweak */
 footer{background:transparent; color:rgba(255,255,255,0.7); border-top:1px solid rgba(255,255,255,0.03);}
@@ -116,7 +126,7 @@ footer{background:transparent; color:rgba(255,255,255,0.7); border-top:1px solid
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .photo img, .skill-fill, .project, .btn{animation:none; transition:none}
+  .photo img, .skill-fill, .project, .btn, .card{animation:none; transition:none}
 }
 
 /* Extra creative styles */
@@ -136,7 +146,7 @@ section + section{margin-top:18px}
 section::before{content:''; position:absolute; left:50%; transform:translateX(-50%); top:0; width:60px; height:3px; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); border-radius:3px; opacity:0.18}
 
 /* Reveal animation for sections and project cards */
-section, .project{opacity:0; transform:translateY(16px); will-change:transform, opacity; transition:opacity .5s ease, transform .6s cubic-bezier(.2,.9,.2,1)}
+section, .project{opacity:0; transform:translateY(12px); will-change:transform, opacity; transition:opacity .45s ease, transform .5s cubic-bezier(.2,.9,.2,1)}
 section.show, .project.show{opacity:1; transform:none}
 
 /* Education timeline */
@@ -149,8 +159,8 @@ section.show, .project.show{opacity:1; transform:none}
 .skills-list .skill{display:inline-block; background:rgba(255,255,255,0.03); padding:6px 10px; margin:6px; border-radius:999px; color:var(--muted); font-weight:600;}
 
 /* Subtle tilt on card hover using transform-preserve-3d */
-.card{transform-style:preserve-3d; transition:transform 0.35s ease, box-shadow 0.35s ease}
-.card:hover{transform:perspective(900px) rotateX(1deg) rotateY(-2deg) translateY(-6px); box-shadow:0 30px 60px rgba(0,0,0,0.7)}
+.card{transform-style:preserve-3d; transition:transform 0.28s ease, box-shadow 0.28s ease}
+.card:hover{transform:perspective(900px) rotateX(0.6deg) rotateY(-1.2deg) translateY(-4px); box-shadow:0 18px 36px rgba(0,0,0,0.55)}
 
 /* Utility: small muted text */
 .muted{color:var(--muted); font-size:0.92rem}
