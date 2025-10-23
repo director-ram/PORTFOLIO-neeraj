@@ -1,14 +1,45 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Add scroll throttling to minimize hover/transition cost during active scroll
+  // Enhanced scroll performance with throttling
   let scrollTimeoutId = null;
+  let isScrolling = false;
   const scrollingClass = 'is-scrolling';
-  window.addEventListener('scroll', () => {
-    document.body.classList.add(scrollingClass);
+  
+  // Throttled scroll handler for better performance
+  const handleScroll = () => {
+    if (!isScrolling) {
+      document.body.classList.add(scrollingClass);
+      isScrolling = true;
+    }
+    
     if (scrollTimeoutId) clearTimeout(scrollTimeoutId);
     scrollTimeoutId = setTimeout(() => {
       document.body.classList.remove(scrollingClass);
-    }, 140);
-  }, { passive: true });
+      isScrolling = false;
+    }, 150);
+  };
+  
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  
+  // Optimize animations with Intersection Observer
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const animationObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.willChange = 'transform, opacity';
+      } else {
+        entry.target.style.willChange = 'auto';
+      }
+    });
+  }, observerOptions);
+  
+  // Observe animated elements
+  document.querySelectorAll('.card, .project, .skills-list .skill, .photo, .timeline-item').forEach(el => {
+    animationObserver.observe(el);
+  });
 
   // Reveal sections and projects
   const revealObserver = new IntersectionObserver((entries) => {
@@ -107,5 +138,33 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   backBtn.setAttribute('title', 'Back to top');
   backBtn.setAttribute('aria-hidden', 'false');
+
+  // Optimized skill level hover animations
+  const skillItems = document.querySelectorAll('.skill');
+  skillItems.forEach(skill => {
+    const skillFill = skill.querySelector('.skill-fill');
+    const skillLabel = skill.querySelector('.skill-label');
+    
+    // Only proceed if skillFill exists (for skill level items)
+    if (skillFill && skillLabel) {
+      // Use requestAnimationFrame for smoother animations
+      skill.addEventListener('mouseenter', () => {
+        if (!document.body.classList.contains(scrollingClass)) {
+          requestAnimationFrame(() => {
+            const percent = skillFill.getAttribute('data-percent');
+            skillFill.style.width = percent;
+            skillFill.style.background = 'linear-gradient(90deg, #ff4444, #ff6666)';
+          });
+        }
+      });
+      
+      skill.addEventListener('mouseleave', () => {
+        requestAnimationFrame(() => {
+          skillFill.style.width = '0%';
+          skillFill.style.background = 'linear-gradient(90deg,var(--accent-1),var(--accent-2))';
+        });
+      });
+    }
+  });
 
 });
