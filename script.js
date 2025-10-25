@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         entry.target.classList.add('show');
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.5 });
 
   document.querySelectorAll('section, .project').forEach(el => revealObserver.observe(el));
 
